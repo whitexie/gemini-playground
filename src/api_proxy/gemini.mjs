@@ -1,6 +1,10 @@
 
 async function handleGeminiAPIRequest(req) {
 	try {
+
+	  if (req.method === "OPTIONS") {
+      return handleOPTIONS();
+    }
 		const url = new URL(req.url);
 		const targetUrl = `https://generativelanguage.googleapis.com${url.pathname}${url.search}`;
 
@@ -35,6 +39,17 @@ async function handleGeminiAPIRequest(req) {
 		});
 	}
 }
+
+
+const handleOPTIONS = async () => {
+  return new Response(null, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+      "Access-Control-Allow-Headers": "*",
+    }
+  });
+};
 
 const fixCors = ({ headers, status, statusText }) => {
   headers = new Headers(headers);
