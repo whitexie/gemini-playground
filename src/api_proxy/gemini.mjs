@@ -23,6 +23,7 @@ async function handleGeminiAPIRequest(req) {
 
 		// 非流式响应直接返回
 		return new Response(response.body, fixCors(response));
+
 	} catch (error) {
 		console.error('Gemini API request error:', error);
 		const errorMessage = error instanceof Error ? error.message : '未知错误';
@@ -40,3 +41,8 @@ const fixCors = ({ headers, status, statusText }) => {
   headers.set("Access-Control-Allow-Origin", "*");
   return { headers, status, statusText };
 };
+
+
+export default {
+	handleGeminiAPIRequest
+}
