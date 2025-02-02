@@ -93,15 +93,15 @@ async function handleRequest(req: Request): Promise<Response> {
 		return handleWebSocket(req);
 	}
 
-	if (url.pathname.endsWith("/chat/completions") ||
+	if (url.pathname.startsWith("/v1beta/")) {
+		const module = await import('./api_proxy/gemini.mjs')
+		return await module.default.handleGeminiAPIRequest(req)
+	}
+
+	else if (url.pathname.endsWith("/chat/completions") ||
 		url.pathname.endsWith("/embeddings") ||
 		url.pathname.endsWith("/models")) {
 		return handleAPIRequest(req);
-	}
-
-	else if (url.pathname.startsWith("/v1beta/")) {
-		const module = await import('./api_proxy/gemini.mjs')
-		return await module.default.handleGeminiAPIRequest(req)
 	}
 
 	// 静态文件处理
